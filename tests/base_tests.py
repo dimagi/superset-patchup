@@ -7,7 +7,8 @@ import os
 import shutil
 
 from flask_testing import TestCase
-from superset.app import create_app, db
+from superset.app import create_app
+from superset.initialization import db
 
 superset_test_home = os.path.join(os.path.dirname(__file__), '.superset')
 shutil.rmtree(superset_test_home, ignore_errors=True)

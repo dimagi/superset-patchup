@@ -13,7 +13,7 @@ setup(
     url='https://github.com/onaio/superset-patchup',
     packages=find_packages(exclude=['docs', 'tests']),
     install_requires=[
-        'apache-superset',
+        'apache-superset==1.4.1',
         'authlib',
         'future',
         'requests',

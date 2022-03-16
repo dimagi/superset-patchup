@@ -2,17 +2,18 @@
 -e .
 
 # others
-pylint
-pylint-flask
-tox
-flake8
-flask-testing
-pep8
-pydocstyle
-coverage
-yapf
-isort
-ipdb
-black
-pip-tools
-pytest
+pylint==2.12.2
+pylint-flask==0.6
+tox==3.24.5
+flake8==4.0.1
+flask==1.1.4
+flask-testing==0.8.1
+pep8==1.7.1
+pydocstyle==6.1.1
+coverage==6.3.2
+yapf==0.32.0
+isort==5.10.1
+ipdb==0.13.9
+pip-tools==6.2.0
+pytest==7.1.0
+MarkupSafe==2.0.1 # https://github.com/aws/aws-sam-cli/issues/3661

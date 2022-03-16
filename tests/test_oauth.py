@@ -237,6 +237,31 @@ class TestOauth(SupersetTestCase):
         user_info3 = csm3.oauth_user_info(provider="OpenSRP")
         assert user_info3 == result_info3
 
+    def test_oauth_user_info_commcare_provider(self):  # pylint: disable=R0201
+        """
+        Test that we get the right user information
+        with the OpenSRP provider
+        """
+        # set test configs
+        app.config["PATCHUP_EMAIL_BASE"] = "noreply@example.com"
+
+        # Sample data returned from commcare
+        data = {'id': 'zdf4545', 'username': 'cam@dimagi.com', 'first_name': 'Captain', 'last_name': 'America',
+                'email': 'cam@dimagi.com'}
+
+        # Expected result
+        result_info = {'id': 'zdf4545', 'username': 'cam@dimagi.com', 'first_name': 'Captain', 'last_name': 'America',
+                       'email': 'cam@dimagi.com'}
+
+        appbuilder = MagicMock()
+        user_mock = MagicMock()
+        user_mock.json.return_value = data
+        appbuilder.sm.oauth_remotes["commcare"].get = MagicMock(side_effect=[user_mock])
+        csm = CustomSecurityManager(appbuilder=appbuilder)
+        user_info = csm.oauth_user_info(provider="commcare")
+        self.assertDictEqual(user_info, result_info)
+
+
     def test_oauth_user_info_no_provider(self):  # pylint: disable=R0201
         """
         Test that when no provider is provided
@@ -381,6 +406,8 @@ class TestOauth(SupersetTestCase):
         self.assertIn(call("opensrp", "OpenSRP"), function_mock.call_args_list)
         csm.oauth_user_info(provider="OPENLMIS")
         self.assertIn(call("OPENLMIS", "openlmis"), function_mock.call_args_list)
+        csm.oauth_user_info(provider="commcare")
+        self.assertIn(call("commcare", "commcare"), function_mock.call_args_list)
 
     @patch("superset_patchup.oauth.jwt")
     @patch("superset_patchup.oauth.jsonify")
