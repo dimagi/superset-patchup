@@ -271,6 +271,12 @@ class CustomSecurityManager(SupersetSecurityManager):
         # above)
         email_base = app.config.get("PATCHUP_EMAIL_BASE")
 
+        if is_valid_provider(provider, "commcare"):
+            logging.debug("Getting user info from {}".format(provider))
+            user = self.appbuilder.sm.oauth_remotes[provider].get("api/v0.5/identity/", token=response).json()
+            logging.debug("user - {}".format(user))
+            return user
+
         if is_valid_provider(provider, "onadata"):
             user = (self.appbuilder.sm.oauth_remotes[provider].get(
                 "api/v1/user.json", token=response).json())
